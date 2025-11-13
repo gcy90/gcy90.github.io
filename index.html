@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学知堂 - 在线学习平台</title>
+  <!-- 引入外部资源 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  
+  <!-- 配置Tailwind -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#36D399',
+            warning: '#FB923C',
+            danger: '#F87272',
+            dark: '#1E293B',
+            light: '#F8FAFC'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+      }
+      .btn-primary {
+        @apply bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all;
+      }
+      .btn-outline {
+        @apply border border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary/10 transition-all;
+      }
+    }
+  </style>
+</head>
+
+<body class="font-inter bg-gray-50 text-dark">
+  <!-- 导航栏 -->
+  <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/95 shadow-sm">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <div class="text-primary text-2xl">
+          <i class="fa fa-graduation-cap"></i>
+        </div>
+        <h1 class="text-xl font-bold text-primary">学知堂</h1>
+      </div>
+      
+      <!-- 桌面导航 -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="#home" class="font-medium hover:text-primary transition-colors">首页</a>
+        <a href="#videos" class="font-medium hover:text-primary transition-colors">视频课程</a>
+        <a href="#homework" class="font-medium hover:text-primary transition-colors">作业中心</a>
+        <a href="#exercises" class="font-medium hover:text-primary transition-colors">练习训练</a>
+        <a href="#resources" class="font-medium hover:text-primary transition-colors">学习资源</a>
+      </nav>
+      
+      <div class="flex items-center space-x-4">
+        <button class="hidden md:block btn-outline">登录</button>
+        <button class="hidden md:block btn-primary">注册</button>
+        
+        <!-- 教师入口 -->
+        <div class="hidden md:block relative group">
+          <button class="flex items-center space-x-1 text-gray-600 hover:text-primary">
+            <span>教师入口</span>
+            <i class="fa fa-chevron-down text-xs"></i>
+          </button>
+          <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block z-50">
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">发布课程</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">布置作业</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">批阅作业</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">教师后台</a>
+          </div>
+        </div>
+        
+        <!-- 移动端菜单按钮 -->
+        <button id="menuBtn" class="md:hidden text-gray-600 focus:outline-none">
+          <i class="fa fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+      <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+        <a href="#home" class="py-2 hover:text-primary transition-colors">首页</a>
+        <a href="#videos" class="py-2 hover:text-primary transition-colors">视频课程</a>
+        <a href="#homework" class="py-2 hover:text-primary transition-colors">作业中心</a>
+        <a href="#exercises" class="py-2 hover:text-primary transition-colors">练习训练</a>
+        <a href="#resources" class="py-2 hover:text-primary transition-colors">学习资源</a>
+        <div class="pt-2 border-t flex space-x-3">
+          <button class="flex-1 btn-outline">登录</button>
+          <button class="flex-1 btn-primary">注册</button>
+        </div>
+        <div class="py-2">
+          <button class="flex items-center space-x-1 text-gray-600 hover:text-primary w-full">
+            <span>教师入口</span>
+            <i class="fa fa-chevron-down text-xs"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-16">
+    <!-- 英雄区域 -->
+    <section id="home" class="bg-gradient-to-br from-primary/90 to-primary py-16 md:py-24">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center">
+          <div class="md:w-1/2 text-white mb-8 md:mb-0">
+            <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-shadow mb-4">
+              让学习更高效<br>让教学更轻松
+            </h2>
+            <p class="text-white/90 text-lg mb-8 max-w-lg">
+              一站式学习平台，提供视频教学、作业管理和练习训练，助力学生高效学习
+            </p>
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+              <button class="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all">
+                开始学习
+              </button>
+              <button class="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-all">
+                了解更多
+              </button>
+            </div>
+          </div>
+          <div class="md:w-1/2 relative">
+            <div class="relative rounded-xl overflow-hidden shadow-2xl transform md:rotate-2 transition-transform hover:rotate-0 duration-500">
+              <img src="https://picsum.photos/id/24/600/400" alt="学生在线学习" class="w-full h-auto">
+              <div class="absolute inset-0 bg-primary/20 flex items-center justify-center">
+                <div class="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center cursor-pointer hover:bg-white transition-all">
+                  <i class="fa fa-play text-primary text-xl ml-1"></i>
+                </div>
+              </div>
+            </div>
+            <!-- 装饰元素 -->
+            <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-secondary rounded-lg -z-10"></div>
+            <div class="absolute -top-6 -right-6 w-32 h-32 bg-warning/30 rounded-full -z-10"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 特色功能 -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">平台特色</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">我们提供全方位的学习支持，从视频教学到作业练习，满足学习的每一个环节</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- 功能卡片1：视频课程 -->
+          <div class="bg-light rounded-xl p-6 shadow-sm card-hover">
+            <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-5">
+              <i class="fa fa-play-circle text-primary text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">视频课程</h3>
+            <p class="text-gray-600 mb-4">高质量教学视频，清晰讲解知识点，支持倍速播放、字幕和离线下载</p>
+            <a href="#videos" class="text-primary font-medium flex items-center">
+              查看课程 <i class="fa fa-arrow-right ml-2 text-sm"></i>
+            </a>
+          </div>
+          
+          <!-- 功能卡片2：作业中心 -->
+          <div class="bg-light rounded-xl p-6 shadow-sm card-hover">
+            <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-5">
+              <i class="fa fa-book text-primary text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">作业中心</h3>
+            <p class="text-gray-600 mb-4">在线发布作业、提交答案和自动批改，跟踪学习进度和掌握情况</p>
+            <a href="#homework" class="text-primary font-medium flex items-center">
+              查看作业 <i class="fa fa-arrow-right ml-2 text-sm"></i>
+            </a>
+          </div>
+          
+          <!-- 功能卡片3：练习训练 -->
+          <div class="bg-light rounded-xl p-6 shadow-sm card-hover">
+            <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-5">
+              <i class="fa fa-pencil text-primary text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">练习训练</h3>
+            <p class="text-gray-600 mb-4">海量练习题，分难度分级训练，智能推荐薄弱环节强化练习</p>
+            <a href="#exercises" class="text-primary font-medium flex items-center">
+              开始练习 <i class="fa fa-arrow-right ml-2 text-sm"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 视频课程区域 -->
+    <section id="videos" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10">
+          <div>
+            <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-2">视频课程</h2>
+            <p class="text-gray-600">精选教学视频，助力高效学习</p>
+          </div>
+          <div class="mt-4 md:mt-0 flex space-x-2 overflow-x-auto pb-2 w-full md:w-auto">
+            <button class="px-4 py-2 bg-primary text-white rounded-full text-sm whitespace-nowrap">全部课程</button>
+            <button class="px-4 py-2 bg-white text-gray-600 rounded-full text-sm whitespace-nowrap hover:bg-gray-100">数学</button>
+            <button class="px-4 py-2 bg-white text-gray-600 rounded-full text-sm whitespace-nowrap hover:bg-gray-100">语文</button>
+            <button class="px-4 py-2 bg-white text-gray-600 rounded-full text-sm whitespace-nowrap hover:bg-gray-100">英语</button>
+            <button class="px-4 py-2 bg-white text-gray-600 rounded-full text-sm whitespace-nowrap hover:bg-gray-100">物理</button>
+            <button class="px-4 py-2 bg-white text-gray-600 rounded-full text-sm whitespace-nowrap hover:bg-gray-100">化学</button>
+          </div>
+        </div>
+        
+        <!-- 视频列表 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- 视频卡片1 -->
+          <div class="bg-white rounded-xl overflow-hidden shadow-sm card-hover">
+            <div class="relative">
+              <img src="https://picsum.photos/id/20/400/225" alt="数学课程" class="w-full h-48 object-cover">
+              <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">15:30</div>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
+                  <i class="fa fa-play text-primary"></i>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="flex items-center text-xs text-gray-500 mb-2">
+                <span class="bg-blue-100 text-primary px-2 py-0.5 rounded">数学</span>
+                <span class="ml-auto"><i class="fa fa-eye mr-1"></i> 1.2k</span>
+              </div>
+              <h3 class="font-bold mb-2 line-clamp-2">一元二次方程的解法与应用</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">详细讲解一元二次方程的多种解法，包括因式分解法、配方法和公式法</p>
+              <div class="flex items-center text-sm">
+                <img src="https://picsum.photos/id/64/40/40" alt="教师头像" class="w-6 h-6 rounded-full mr-2">
+                <span class="text-gray-700">张老师</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 视频卡片2 -->
+          <div class="bg-white rounded-xl overflow-hidden shadow-sm card-hover">
+            <div class="relative">
+              <img src="https://picsum.photos/id/21/400/225" alt="英语课程" class="w-full h-48 object-cover">
+              <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">22:15</div>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
+                  <i class="fa fa-play text-primary"></i>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="flex items-center text-xs text-gray-500 mb-2">
+                <span class="bg-blue-100 text-primary px-2 py-0.5 rounded">英语</span>
+                <span class="ml-auto"><i class="fa fa-eye mr-1"></i> 2.5k</span>
+              </div>
+              <h3 class="font-bold mb-2 line-clamp-2">一般过去时的用法与练习</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">系统讲解一般过去时的构成、用法及常见时间状语，附大量例句</p>
+              <div class="flex items-center text-sm">
+                <img src="https://picsum.photos/id/65/40/40" alt="教师头像" class="w-6 h-6 rounded-full mr-2">
+                <span class="text-gray-700">李老师</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 视频卡片3 -->
+          <div class="bg-white rounded-xl overflow-hidden shadow-sm card-hover">
+            <div class="relative">
+              <img src="https://picsum.photos/id/22/400/225" alt="物理课程" class="w-full h-48 object-cover">
+              <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">18:45</div>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
+                  <i class="fa fa-play text-primary"></i>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="flex items-center text-xs text-gray-500 mb-2">
+                <span class="bg-blue-100 text-primary px-2 py-0.5 rounded">物理</span>
+                <span class="ml-auto"><i class="fa fa-eye mr-1"></i> 986</span>
+              </div>
+              <h3 class="font-bold mb-2 line-clamp-2">牛顿运动定律的应用实例</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">通过实际案例分析牛顿三大运动定律的应用，帮助理解物理概念</p>
+              <div class="flex items-center text-sm">
+                <img src="https://picsum.photos/id/66/40/40" alt="教师头像" class="w-6 h-6 rounded-full mr-2">
+                <span class="text-gray-700">王老师</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 视频卡片4 -->
+          <div class="bg-white rounded-xl overflow-hidden shadow-sm card-hover">
+            <div class="relative">
+              <img src="https://picsum.photos/id/23/400/225" alt="语文课程" class="w-full h-48 object-cover">
+              <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">25:10</div>
+              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
+                  <i class="fa fa-play text-primary"></i>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="flex items-center text-xs text-gray-500 mb-2">
+                <span class="bg-blue-100 text-primary px-2 py-0.5 rounded">语文</span>
+                <span class="ml-auto"><i class="fa fa-eye mr-1"></i> 1.8k</span>
+              </div>
+              <h3 class="font-bold mb-2 line-clamp-2">文言文常见虚词用法解析</h3>
+              <p class="text-gray-600 text-sm mb-3 line-clamp-2">系统讲解文言文常见虚词的含义和用法，结合例句帮助理解记忆</p>
+              <div class="flex items-center text-sm">
+                <img src="https://picsum.photos/id/67/40/40" alt="教师头像" class="w-6 h-6 rounded-full mr-2">
+                <span class="text-gray-700">刘老师</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-10">
+          <button class="btn-outline">查看全部课程</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 作业中心 -->
+    <section id="homework" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">作业中心</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">及时完成作业，巩固所学知识，跟踪学习进度</p>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- 待完成作业 -->
+          <div class="lg:col-span-2 bg-light rounded-xl shadow-sm overflow-hidden">
+            <div class="p-6 border-b">
+              <h3 class="font-bold text-xl">待完成作业</h3>
+            </div>
+            <div class="divide-y">
+              <!-- 作业项1 -->
+              <div class="p-6 hover:bg-white/50 transition-colors">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold">一元二次方程练习题</h4>
+                  <span class="bg-danger/10 text-danger text-xs px-2 py-1 rounded-full">即将截止</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-4">完成关于一元二次方程解法的练习题，共15道题</p>
+                <div class="flex flex-wrap justify-between items-center">
+                  <div class="flex items-center text-sm text-gray-500 mb-2 sm:mb-0">
+                    <span class="flex items-center mr-4"><i class="fa fa-book mr-1"></i> 数学</span>
+                    <span class="flex items-center"><i class="fa fa-calendar mr-1"></i> 截止：今天 23:59</span>
+                  </div>
+                  <button class="btn-primary text-sm">立即完成</button>
+                </div>
+              </div>
+              
+              <!-- 作业项2 -->
+              <div class="p-6 hover:bg-white/50 transition-colors">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold">英语阅读理解训练</h4>
+                  <span class="bg-warning/10 text-warning text-xs px-2 py-1 rounded-full">3天后截止</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-4">完成3篇英语阅读理解，提升阅读能力和词汇量</p>
+                <div class="flex flex-wrap justify-between items-center">
+                  <div class="flex items-center text-sm text-gray-500 mb-2 sm:mb-0">
+                    <span class="flex items-center mr-4"><i class="fa fa-book mr-1"></i> 英语</span>
+                    <span class="flex items-center"><i class="fa fa-calendar mr-1"></i> 截止：3天后</span>
+                  </div>
+                  <button class="btn-primary text-sm">立即完成</button>
+                </div>
+              </div>
+              
+              <!-- 作业项3 -->
+              <div class="p-6 hover:bg-white/50 transition-colors">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-bold">物理实验报告</h4>
+                  <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">5天后截止</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-4">完成"牛顿第二定律验证"实验报告，按要求格式提交</p>
+                <div class="flex flex-wrap justify-between items-center">
+                  <div class="flex items-center text-sm text-gray-500 mb-2 sm:mb-0">
+                    <span class="flex items-center mr-4"><i class="fa fa-book mr-1"></i> 物理</span>
+                    <span class="flex items-center"><i class="fa fa-calendar mr-1"></i> 截止：5天后</span>
+                  </div>
+                  <button class="btn-primary text-sm">立即完成</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 已完成作业和统计 -->
+          <div class="space-y-8">
+            <!-- 已完成作业 -->
+            <div class="bg-light rounded-xl shadow-sm overflow-hidden">
+              <div class="p-6 border-b flex justify-between items-center">
+                <h3 class="font-bold text-xl">已完成作业</h3>
+                <span class="text-primary text-sm">查看全部</span>
+              </div>
+              <div class="p-6">
+                <!-- 已完成作业1 -->
+                <div class="mb-4 pb-4 border-b">
+                  <div class="flex justify-between items-start mb-1">
+                    <h4 class="font-medium">记叙文写作练习</h4>
+                    <span class="text-secondary text-sm">已批改</span>
+                  </div>
+                  <div class="flex items-center text-sm text-gray-500 mb-2">
+                    <span class="mr-4">语文</span>
+                    <span>提交于：昨天</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="text-warning font-bold mr-2">92</div>
+                    <div class="text-sm text-gray-600">老师评语：文章结构清晰，情感真挚</div>
+                  </div>
+                </div>
+                
+                <!-- 已完成作业2 -->
+                <div>
+                  <div class="flex justify-between items-start mb-1">
+                    <h4 class="font-medium">化学方程式配平练习</h4>
+                    <span class="text-secondary text-sm">已批改</span>
+                  </div>
+                  <div class="flex items-center text-sm text-gray-500 mb-2">
+                    <span class="mr-4">化学</span>
+                    <span>提交于：3天前</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div class="text-warning font-bold mr-2">85</div>
+                    <div class="text-sm text-gray-600">老师评语：整体不错，注意细节配平</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 作业完成情况统计 -->
+            <div class="bg-light rounded-xl shadow-sm overflow-hidden">
+              <div class="p-6 border-b">
+                <h3 class="font-bold text-xl">作业完成情况</h3>
+              </div>
+              <div class="p-6">
+                <canvas id="homeworkChart" width="400" height="200"></canvas>
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                  <div class="bg-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-primary mb-1">87%</div>
+                    <div class="text-sm text-gray-600">按时完成率</div>
+                  </div>
+                  <div class="bg-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-warning mb-1">85.5</div>
+                    <div class="text-sm text-gray-600">平均得分</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 练习训练区域 -->
+    <section id="exercises" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">练习训练</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">针对性练习，巩固知识点，提升解题能力</p>
+        </div>
+        
+        <!-- 练习分类 -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <button class="bg-primary text-white p-6 rounded-xl flex flex-col items-center justify-center">
+            <i class="fa fa-calculator text-3xl mb-3"></i>
+            <span class="font-medium">数学练习</span>
+          </button>
+          <button class="bg-white text-gray-700 p-6 rounded-xl flex flex-col items-center justify-center hover:bg-gray-100 transition-colors">
+            <i class="fa fa-language text-3xl mb-3 text-primary"></i>
+            <span class="font-medium">语文练习</span>
+          </button>
+          <button class="bg-white text-gray-700 p-6 rounded-xl flex flex-col items-center justify-center hover:bg-gray-100 transition-colors">
+            <i class="fa fa-globe text-3xl mb-3 text-primary"></i>
+            <span class="font-medium">英语练习</span>
+          </button>
+          <button class="bg-white text-gray-700 p-6 rounded-xl flex flex-col items-center justify-center hover:bg-gray-100 transition-colors">
+            <i class="fa fa-flask text-3xl mb-3 text-primary"></i>
+            <span class="font-medium">理科综合</span>
+          </button>
+        </div>
+        
+        <!-- 推荐练习 -->
+        <div class="mb-10">
+          <h3 class="text-xl font-bold mb-6">为你推荐</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 练习卡片1 -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+              <div class="p-6">
+                <div class="flex items-center mb-4">
+                  <span class="bg-blue-100 text-primary text-xs px-2 py-1 rounded-full mr-2">数学</span>
+                  <span class="text-gray-500 text-sm">难度：中等</span>
+                </div>
+                <h4 class="font-bold mb-3">函数图像与性质专项练习</h4>
+                <p class="text-gray-600 text-sm mb-4">包含一次函数、二次函数、反比例函数的图像绘制与性质应用</p>
+                <div class="flex justify-between items-center">
+                  <div class="text-sm text-gray-500">
+                    <span class="mr-3"><i class="fa fa-question-circle mr-1"></i> 20题</span>
+                    <span><i class="fa fa-clock-o mr-1"></i> 30分钟</span>
+                  </div>
+                  <button class="btn-primary text-sm">开始练习</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 练习卡片2 -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+              <div class="p-6">
+                <div class="flex items-center mb-4">
+                  <span class="bg-blue-100 text-primary text-xs px-2 py-1 rounded-full mr-2">英语</span>
+                  <span class="text-gray-500 text-sm">难度：基础</span>
+                </div>
+                <h4 class="font-bold mb-3">英语语法填空专项训练</h4>
+                <p class="text-gray-600 text-sm mb-4">针对冠词、介词、代词等语法点的填空练习，巩固基础语法</p>
+                <div class="flex justify-between items-center">
+                  <div class="text-sm text-gray-500">
+                    <span class="mr-3"><i class="fa fa-question-circle mr-1"></i> 30题</span>
+                    <span><i class="fa fa-clock-o mr-1"></i> 25分钟</span>
+                  </div>
+                  <button class="btn-primary text-sm">开始练习</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 练习卡片3 -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden card-hover">
+              <div class="p-6">
+                <div class="flex items-center mb-4">
+                  <span class="bg-blue-100 text-primary text-xs px-2 py-1 rounded-full mr-2">物理</span>
+                  <span class="text-gray-500 text-sm">难度：较难</span>
+                </div>
+                <h4 class="font-bold mb-3">力学综合应用题练习</h4>
+                <p class="text-gray-600 text-sm mb-4">综合应用牛顿运动定律、动量守恒和能量守恒解决复杂问题</p>
+                <div class="flex justify-between items-center">
+                  <div class="text-sm text-gray-500">
+                    <span class="mr-3"><i class="fa fa-question-circle mr-1"></i> 10题</span>
+                    <span><i class="fa fa-clock-o mr-1"></i> 45分钟</span>
+                  </div>
+                  <button class="btn-primary text-sm">开始练习</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 历年真题 -->
+        <div>
+          <h3 class="text-xl font-bold mb-6">历年真题</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full bg-white rounded-xl shadow-sm">
+              <thead>
+                <tr class="border-b">
+                  <th class="px-6 py-4 text-left text-gray-600 font-medium">试卷名称</th>
+                  <th class="px-6 py-4 text-left text-gray-600 font-medium">科目</th>
+                  <th class="px-6 py-4 text-left text-gray-600 font-medium">年份</th>
+                  <th class="px-6 py-4 text-left text-gray-600 font-medium">题数</th>
+                  <th class="px-6 py-4 text-left text-gray-600 font-medium">时长</th>
+                  <th class="px-6 py-4 text-left text-gray-600 font-medium">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-6 py-4">2023年高考数学真题</td>
+                  <td class="px-6 py-4">数学</td>
+                  <td class="px-6 py-4">2023</td>
+                  <td class="px-6 py-4">23题</td>
+                  <td class="px-6 py-4">120分钟</td>
+                  <td class="px-6 py-4">
+                    <button class="text-primary hover:text-primary/80">开始做题</button>
+                  </td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-6 py-4">2023年高考语文真题</td>
+                  <td class="px-6 py-4">语文</td>
+                  <td class="px-6 py-4">2023</td>
+                  <td class="px-6 py-4">15题</td>
+                  <td class="px-6 py-4">150分钟</td>
+                  <td class="px-6 py-4">
+                    <button class="text-primary hover:text-primary/80">开始做题</button>
+                  </td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="px-6 py-4">2022年高考英语真题</td>
+                  <td class="px-6 py-4">英语</td>
+                  <td class="px-6 py-4">2022</td>
+                  <td class="px-6 py-4">12题</td>
+                  <td class="px-6 py-4">120分钟</td>
+                  <td class="px-6 py-4">
+                    <button class="text-primary hover:text-primary/80">开始做题</button>
+                  </td>
+                </tr>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4">2022年高考理综真题</td>
+                  <td class="px-6 py-4">理科综合</td>
+                  <td class="px-6 py-4">2022</td>
+                  <td class="px-6 py-4">38题</td>
+                  <td class="px-6 py-4">150分钟</td>
+                  <td class="px-6 py-4">
+                    <button class="text-primary hover:text-primary/80">开始做题</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 学习资源 -->
+    <section id="resources" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">学习资源</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">丰富的学习资料，助力你更好地掌握知识</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 资源卡片1 -->
+          <div class="bg-light rounded-xl overflow-hidden shadow-sm card-hover">
+            <div class="h-40 bg-primary/10 flex items-center justify-center">
+              <i class="fa fa-file-pdf-o text-6xl text-primary/70"></i>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center text-xs text-gray-500 mb-2">
+                <span class="bg-blue-100 text-primary px-2 py-0.5 rounded">数学</span>
+                <span class="ml-auto"><i class="fa fa-download mr-1"></i> 2.3k</span>
+              </div>
+              <h3 class="font-bold mb-2">高中数学公式大全.pdf</h3>
+              <p class="text-gray-600 text-sm mb-4">整理了高中数学所有重要公式和定理，方便查阅和记忆</p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">2.5MB</span>
+                <button class="btn-outline text-sm">下载</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 资源卡片2 -->
+          <div class="bg-light rounded-xl overflow-hidden shadow-sm card-hover">
+            <div class="h-40 bg-primary/10 flex items-center justify-center">
+              <i class="fa fa-file-word-o text-6xl text-primary/70"></i>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center text-xs text-gray-500 mb-2">
+                <span class="bg-blue-100 text-primary px-2 py-0.5 rounded">语文</span>
+                <span class="ml-auto"><i class="fa fa-download mr-1"></i> 1.8k</span>
+              </div>
+              <h3 class="font-bold mb-2">高考作文素材积累.docx</h3>
+              <p class="text-gray-600 text-sm mb-4">精选高考作文素材，包括名人名言、时事评论和经典案例</p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">1.8MB</span>
+                <button class="btn-outline text-sm">下载</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 资源卡片3 -->
+          <div class="bg-light rounded-xl overflow-hidden shadow-sm card-hover">
+            <div class="h-40 bg-primary/10 flex items-center justify-center">
+              <i class="fa fa-file-excel-o text-6xl text-primary/70"></i>
+            </div>
+            <div class="p-5">
+              <div class="flex items-center text-xs text-gray-500 mb-2">
+                <span class="bg-blue-100 text-primary px-2 py-0.5 rounded">英语</span>
+                <span class="ml-auto"><i class="fa fa-download mr-1"></i> 3.1k</span>
+              </div>
+              <h3 class="font-bold mb-2">高考英语词汇表.xlsx</h3>
+              <p class="text-gray-600 text-sm mb-4">包含高考必备英语词汇，按字母顺序排列，附音标和例句</p>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-500">1.2MB</span>
+                <button class="btn-outline text-sm">下载</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-10">
+          <button class="btn-outline">查看全部资源</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 教师入驻 -->
+    <section class="py-16 bg-primary/5">
+      <div class="container mx-auto px-4">
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+              <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">诚邀教师入驻</h2>
+              <p class="text-gray-600 mb-6">如果你是一名优秀的教师，欢迎加入我们的平台，分享你的知识和教学经验，帮助更多学生成长</p>
+              <ul class="space-y-3 mb-8">
+                <li class="flex items-start">
+                  <i class="fa fa-check-circle text-secondary mt-1 mr-3"></i>
+                  <span>免费创建和发布课程视频</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fa fa-check-circle text-secondary mt-1 mr-3"></i>
+                  <span>在线布置作业和自动批改系统</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fa fa-check-circle text-secondary mt-1 mr-3"></i>
+                  <span>获取学生学习数据和进度分析</span>
+                </li>
+                <li class="flex items-start">
+                  <i class="fa fa-check-circle text-secondary mt-1 mr-3"></i>
+                  <span>与学生互动交流，解答疑问</span>
+                </li>
+              </ul>
+              <button class="btn-primary self-start">立即入驻</button>
+            </div>
+            <div class="md:w-1/2">
+              <img src="https://picsum.photos/id/342/600/400" alt="教师入驻" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 底部CTA -->
+    <section class="py-16 bg-primary">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-6 text-white">开始你的学习之旅</h2>
+        <p class="text-white/90 max-w-2xl mx-auto mb-8">加入我们的学习平台，享受优质的教学资源和个性化的学习体验</p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <button class="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all">
+            立即注册
+          </button>
+          <button class="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-all">
+            了解更多
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white pt-16 pb-8">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div>
+          <div class="flex items-center space-x-2 mb-6">
+            <div class="text-primary text-2xl">
+              <i class="fa fa-graduation-cap"></i>
+            </div>
+            <h3 class="text-xl font-bold">学知堂</h3>
+          </div>
+          <p class="text-gray-400 mb-6">专注于提供高质量的在线教育资源，助力学生高效学习，教师轻松教学</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors"><i class="fa fa-weixin text-xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors"><i class="fa fa-weibo text-xl"></i></a>
+            <a href="#" class="text-gray-400 hover:text-primary transition-colors"><i class="fa fa-qq text-xl"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">快速链接</h4>
+          <ul class="space-y-3">
+            <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">首页</a></li>
+            <li><a href="#videos" class="text-gray-400 hover:text-white transition-colors">视频课程</a></li>
+            <li><a href="#homework" class="text-gray-400 hover:text-white transition-colors">作业中心</a></li>
+            <li><a href="#exercises" class="text-gray-400 hover:text-white transition-colors">练习训练</a></li>
+            <li><a href="#resources" class="text-gray-400 hover:text-white transition-colors">学习资源</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">帮助中心</h4>
+          <ul class="space-y-3">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">新手指南</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">常见问题</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">使用教程</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">意见反馈</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-6">联系我们</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
+              <span class="text-gray-400">北京市海淀区中关村大街1号</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fa fa-phone text-primary mr-3"></i>
+              <span class="text-gray-400">400-123-4567</span>
+            </li>
+            <li class="flex items-center">
+              <i class="fa fa-envelope text-primary mr-3"></i>
+              <span class="text-gray-400">contact@xuezhitang.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+        <p>© 2023 学知堂在线学习平台 版权所有</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('py-2', 'shadow');
+        navbar.classList.remove('py-3');
+      } else {
+        navbar.classList.add('py-3');
+        navbar.classList.remove('py-2', 'shadow');
+      }
+    });
+    
+    // 移动端菜单切换
+    document.getElementById('menuBtn').addEventListener('click', function() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.classList.toggle('hidden');
+    });
+    
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // 关闭移动菜单
+          document.getElementById('mobileMenu').classList.add('hidden');
+        }
+      });
+    });
+    
+    // 作业完成情况图表
+    window.addEventListener('load', function() {
+      const ctx = document.getElementById('homeworkChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['第1周', '第2周', '第3周', '第4周', '第5周', '第6周'],
+          datasets: [{
+            label: '作业得分',
+            data: [78, 82, 75, 88, 85, 90],
+            borderColor: '#165DFF',
+            backgroundColor: 'rgba(22, 93, 255, 0.1)',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              min: 60,
+              max: 100,
+              ticks: {
+                stepSize: 10
+              }
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
