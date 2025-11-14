@@ -235,16 +235,17 @@
         
         <!-- 视频列表 -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <!-- 视频卡片1 -->
+          <!-- 视频卡片1（修复播放按钮跳转链接） -->
           <div class="bg-white rounded-xl overflow-hidden shadow-sm card-hover">
             <div class="relative">
               <img src="https://picsum.photos/id/20/400/225" alt="乐高课程" class="w-full h-48 object-cover">
               <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">15:30</div>
-              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+              <!-- 修复：点击播放按钮跳转至视频播放页 -->
+              <a href="video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <i class="fa fa-play text-primary"></i>
                 </div>
-              </div>
+              </a>
             </div>
             <div class="p-4">
               <div class="flex items-center text-xs text-gray-500 mb-2">
@@ -265,11 +266,11 @@
             <div class="relative">
               <img src="https://picsum.photos/id/21/400/225" alt="英语课程" class="w-full h-48 object-cover">
               <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">22:15</div>
-              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+              <a href="video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <i class="fa fa-play text-primary"></i>
                 </div>
-              </div>
+              </a>
             </div>
             <div class="p-4">
               <div class="flex items-center text-xs text-gray-500 mb-2">
@@ -290,11 +291,11 @@
             <div class="relative">
               <img src="https://picsum.photos/id/22/400/225" alt="物理课程" class="w-full h-48 object-cover">
               <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">18:45</div>
-              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+              <a href="video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <i class="fa fa-play text-primary"></i>
                 </div>
-              </div>
+              </a>
             </div>
             <div class="p-4">
               <div class="flex items-center text-xs text-gray-500 mb-2">
@@ -315,11 +316,11 @@
             <div class="relative">
               <img src="https://picsum.photos/id/23/400/225" alt="语文课程" class="w-full h-48 object-cover">
               <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">25:10</div>
-              <div class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+              <a href="video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <i class="fa fa-play text-primary"></i>
                 </div>
-              </div>
+              </a>
             </div>
             <div class="p-4">
               <div class="flex items-center text-xs text-gray-500 mb-2">
@@ -1078,7 +1079,22 @@
       mobileMenu.classList.toggle('hidden');
     });
     
-    // 平滑滚动（修复版）
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
+    // 平滑滚动实现
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80, // 减去导航栏高度，避免被遮挡
+            behavior: 'smooth'
+          });
+          // 关闭移动端菜单（如果打开）
+          document.getElementById('mobileMenu').classList.add('hidden');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
