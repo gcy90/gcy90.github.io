@@ -133,9 +133,10 @@
               一站式学习平台，提供视频教学、作业管理和练习训练，助力学生高效学习
             </p>
             <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <button class="bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all">
+              <!-- 修复：将按钮改为锚点链接，指向视频课程区域 -->
+              <a href="#videos" class="inline-block bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all">
                 开始学习
-              </button>
+              </a>
               <button class="border border-white text-white px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-all">
                 了解更多
               </button>
@@ -831,24 +832,30 @@
       mobileMenu.classList.toggle('hidden');
     });
     
-    // 平滑滚动
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
+    // 平滑滚动（修复版）
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
           
-          // 关闭移动菜单
-          document.getElementById('mobileMenu').classList.add('hidden');
-        }
+          const targetId = this.getAttribute('href');
+          if (targetId === '#' || targetId === '') return;
+          
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            // 计算目标位置（减去导航栏高度）
+            const navbarHeight = document.getElementById('navbar').offsetHeight;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+            
+            // 关闭移动菜单
+            document.getElementById('mobileMenu').classList.add('hidden');
+          }
+        });
       });
     });
     
