@@ -47,9 +47,17 @@
       .btn-outline {
         @apply border border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary/10 transition-all;
       }
-      .chart-container {
-        @apply transition-none;
-        content-visibility: auto;
+      .btn-secondary {
+        @apply bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-all;
+      }
+      .btn-danger {
+        @apply bg-danger text-white px-4 py-2 rounded-lg hover:bg-danger/90 transition-all;
+      }
+      .upload-area {
+        @apply border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors;
+      }
+      .upload-tab.active {
+        @apply text-primary border-b-2 border-primary font-medium;
       }
     }
   </style>
@@ -71,25 +79,20 @@
         <a href="#homework" class="font-medium hover:text-primary transition-colors">作业中心</a>
         <a href="#exercises" class="font-medium hover:text-primary transition-colors">练习训练</a>
         <a href="#resources" class="font-medium hover:text-primary transition-colors">学习资源</a>
+        <!-- 教师专属导航 -->
+        <div class="relative group">
+          <a href="#teacher-panel" class="font-medium hover:text-primary transition-colors">教师面板</a>
+          <div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block z-50">
+            <a href="#courseware-upload" class="block px-4 py-2 hover:bg-gray-100">上传课件</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">课程管理</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100">作业批阅</a>
+          </div>
+        </div>
       </nav>
       
       <div class="flex items-center space-x-4">
         <button class="hidden md:block btn-outline">登录</button>
         <button class="hidden md:block btn-primary">注册</button>
-        
-        <!-- 教师入口 -->
-        <div class="hidden md:block relative group">
-          <button class="flex items-center space-x-1 text-gray-600 hover:text-primary px-2 py-1 rounded transition-colors">
-            <span>教师入口</span>
-            <i class="fa fa-chevron-down text-xs"></i>
-          </button>
-          <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block z-50">
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">发布课程</a>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">布置作业</a>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">批阅作业</a>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">教师后台</a>
-          </div>
-        </div>
         
         <!-- 移动端菜单按钮 -->
         <button id="menuBtn" class="md:hidden text-gray-600 focus:outline-none">
@@ -106,15 +109,20 @@
         <a href="#homework" class="py-2 hover:text-primary transition-colors">作业中心</a>
         <a href="#exercises" class="py-2 hover:text-primary transition-colors">练习训练</a>
         <a href="#resources" class="py-2 hover:text-primary transition-colors">学习资源</a>
-        <div class="pt-2 border-t flex space-x-3">
-          <button class="flex-1 btn-outline">登录</button>
-          <button class="flex-1 btn-primary">注册</button>
-        </div>
-        <div class="py-2">
+        <!-- 移动端教师入口 -->
+        <div class="py-2 border-t">
           <button class="flex items-center space-x-1 text-gray-600 hover:text-primary w-full">
             <span>教师入口</span>
             <i class="fa fa-chevron-down text-xs"></i>
           </button>
+          <div class="pl-4 mt-2 space-y-2 hidden">
+            <a href="#courseware-upload" class="block py-1 hover:text-primary">上传课件</a>
+            <a href="#" class="block py-1 hover:text-primary">课程管理</a>
+          </div>
+        </div>
+        <div class="pt-2 border-t flex space-x-3">
+          <button class="flex-1 btn-outline">登录</button>
+          <button class="flex-1 btn-primary">注册</button>
         </div>
       </div>
     </div>
@@ -133,7 +141,7 @@
               一站式学习平台，提供视频教学、作业管理和练习训练，助力学生高效学习
             </p>
             <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <!-- 修复：将按钮改为锚点链接，指向视频课程区域 -->
+              <!-- 修复：跳转至视频课程区域 -->
               <a href="#videos" class="inline-block bg-white text-primary px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-all">
                 开始学习
               </a>
@@ -186,21 +194,21 @@
               <i class="fa fa-book text-primary text-2xl"></i>
             </div>
             <h3 class="text-xl font-bold mb-3">作业中心</h3>
-            <p class="text-gray-600 mb-4">在线发布作业、提交答案和自动批改，跟踪学习进度和掌握情况</p>
+            <p class="text-gray-600 mb-4">支持视频/文档作业提交，在线批改和进度跟踪，巩固所学知识</p>
             <a href="#homework" class="text-primary font-medium flex items-center">
               查看作业 <i class="fa fa-arrow-right ml-2 text-sm"></i>
             </a>
           </div>
           
-          <!-- 功能卡片3：练习训练 -->
+          <!-- 功能卡片3：课件资源 -->
           <div class="bg-light rounded-xl p-6 shadow-sm card-hover">
             <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-5">
-              <i class="fa fa-pencil text-primary text-2xl"></i>
+              <i class="fa fa-file-text-o text-primary text-2xl"></i>
             </div>
-            <h3 class="text-xl font-bold mb-3">练习训练</h3>
-            <p class="text-gray-600 mb-4">海量练习题，分难度分级训练，智能推荐薄弱环节强化练习</p>
-            <a href="#exercises" class="text-primary font-medium flex items-center">
-              开始练习 <i class="fa fa-arrow-right ml-2 text-sm"></i>
+            <h3 class="text-xl font-bold mb-3">课件资源</h3>
+            <p class="text-gray-600 mb-4">教师可上传视频、PDF、PPT等课件，学生随时查看下载，辅助学习</p>
+            <a href="#resources" class="text-primary font-medium flex items-center">
+              查看资源 <i class="fa fa-arrow-right ml-2 text-sm"></i>
             </a>
           </div>
         </div>
@@ -339,7 +347,7 @@
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">作业中心</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">及时完成作业，巩固所学知识，跟踪学习进度</p>
+          <p class="text-gray-600 max-w-2xl mx-auto">支持视频/文档作业提交，及时完成作业，巩固所学知识</p>
         </div>
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -355,29 +363,29 @@
                   <h4 class="font-bold">一元二次方程练习题</h4>
                   <span class="bg-danger/10 text-danger text-xs px-2 py-1 rounded-full">即将截止</span>
                 </div>
-                <p class="text-gray-600 text-sm mb-4">完成关于一元二次方程解法的练习题，共15道题</p>
+                <p class="text-gray-600 text-sm mb-4">完成关于一元二次方程解法的练习题，可上传解题过程视频（可选）</p>
                 <div class="flex flex-wrap justify-between items-center">
                   <div class="flex items-center text-sm text-gray-500 mb-2 sm:mb-0">
                     <span class="flex items-center mr-4"><i class="fa fa-book mr-1"></i> 数学</span>
                     <span class="flex items-center"><i class="fa fa-calendar mr-1"></i> 截止：今天 23:59</span>
                   </div>
-                  <button class="btn-primary text-sm">立即完成</button>
+                  <button class="btn-primary text-sm homework-submit-btn" data-homework="一元二次方程练习题" data-subject="数学">立即完成</button>
                 </div>
               </div>
               
               <!-- 作业项2 -->
               <div class="p-6 hover:bg-white/50 transition-colors">
                 <div class="flex justify-between items-start mb-3">
-                  <h4 class="font-bold">英语阅读理解训练</h4>
+                  <h4 class="font-bold">英语口语汇报作业</h4>
                   <span class="bg-warning/10 text-warning text-xs px-2 py-1 rounded-full">3天后截止</span>
                 </div>
-                <p class="text-gray-600 text-sm mb-4">完成3篇英语阅读理解，提升阅读能力和词汇量</p>
+                <p class="text-gray-600 text-sm mb-4">录制3分钟英语口语汇报视频，主题：My Favorite Hobby</p>
                 <div class="flex flex-wrap justify-between items-center">
                   <div class="flex items-center text-sm text-gray-500 mb-2 sm:mb-0">
                     <span class="flex items-center mr-4"><i class="fa fa-book mr-1"></i> 英语</span>
                     <span class="flex items-center"><i class="fa fa-calendar mr-1"></i> 截止：3天后</span>
                   </div>
-                  <button class="btn-primary text-sm">立即完成</button>
+                  <button class="btn-primary text-sm homework-submit-btn" data-homework="英语口语汇报作业" data-subject="英语">立即完成</button>
                 </div>
               </div>
               
@@ -387,13 +395,13 @@
                   <h4 class="font-bold">物理实验报告</h4>
                   <span class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">5天后截止</span>
                 </div>
-                <p class="text-gray-600 text-sm mb-4">完成"牛顿第二定律验证"实验报告，按要求格式提交</p>
+                <p class="text-gray-600 text-sm mb-4">完成"牛顿第二定律验证"实验报告，可上传实验过程视频辅助说明</p>
                 <div class="flex flex-wrap justify-between items-center">
                   <div class="flex items-center text-sm text-gray-500 mb-2 sm:mb-0">
                     <span class="flex items-center mr-4"><i class="fa fa-book mr-1"></i> 物理</span>
                     <span class="flex items-center"><i class="fa fa-calendar mr-1"></i> 截止：5天后</span>
                   </div>
-                  <button class="btn-primary text-sm">立即完成</button>
+                  <button class="btn-primary text-sm homework-submit-btn" data-homework="物理实验报告" data-subject="物理">立即完成</button>
                 </div>
               </div>
             </div>
@@ -695,6 +703,80 @@
       </div>
     </section>
 
+    <!-- 教师面板 - 课件上传 -->
+    <section id="teacher-panel" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">教师面板</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">管理课程、上传课件、批阅作业，一站式教学管理</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- 课件上传卡片 -->
+          <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+            <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+              <i class="fa fa-cloud-upload text-primary text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4">上传教学课件</h3>
+            <p class="text-gray-600 mb-6">支持视频、PDF、PPT等格式课件上传，方便学生课后复习</p>
+            <button id="open-courseware-upload" class="btn-primary">立即上传</button>
+          </div>
+          
+          <!-- 课程管理卡片 -->
+          <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+            <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+              <i class="fa fa-book text-primary text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4">课程管理</h3>
+            <p class="text-gray-600 mb-6">创建课程、管理课时、查看学生学习进度</p>
+            <button class="btn-primary">管理课程</button>
+          </div>
+        </div>
+        
+        <!-- 已上传课件列表 -->
+        <div class="mt-16">
+          <h3 class="text-xl font-bold mb-6">已上传课件</h3>
+          <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="border-b">
+                    <th class="px-6 py-4 text-left text-gray-600 font-medium">课件名称</th>
+                    <th class="px-6 py-4 text-left text-gray-600 font-medium">所属课程</th>
+                    <th class="px-6 py-4 text-left text-gray-600 font-medium">文件类型</th>
+                    <th class="px-6 py-4 text-left text-gray-600 font-medium">上传时间</th>
+                    <th class="px-6 py-4 text-left text-gray-600 font-medium">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="px-6 py-4">一元二次方程课件.pdf</td>
+                    <td class="px-6 py-4">高中数学必修一</td>
+                    <td class="px-6 py-4">PDF</td>
+                    <td class="px-6 py-4">2023-10-15</td>
+                    <td class="px-6 py-4">
+                      <button class="text-primary hover:text-primary/80 mr-4">编辑</button>
+                      <button class="text-danger hover:text-danger/80">删除</button>
+                    </td>
+                  </tr>
+                  <tr class="border-b hover:bg-gray-50">
+                    <td class="px-6 py-4">英语语法讲解.mp4</td>
+                    <td class="px-6 py-4">高中英语必修二</td>
+                    <td class="px-6 py-4">视频</td>
+                    <td class="px-6 py-4">2023-10-12</td>
+                    <td class="px-6 py-4">
+                      <button class="text-primary hover:text-primary/80 mr-4">编辑</button>
+                      <button class="text-danger hover:text-danger/80">删除</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 教师入驻 -->
     <section class="py-16 bg-primary/5">
       <div class="container mx-auto px-4">
@@ -746,6 +828,170 @@
         </div>
       </div>
     </section>
+
+    <!-- 作业提交弹窗 -->
+    <div id="homeworkSubmitModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+      <div class="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b flex justify-between items-center">
+          <h3 class="text-xl font-bold" id="modalTitle">提交作业：一元二次方程练习题</h3>
+          <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+        
+        <div class="p-6">
+          <!-- 视频上传区域 -->
+          <div class="mb-8">
+            <h4 class="font-medium mb-4">上传作业视频（可选，支持实践类作业）</h4>
+            
+            <!-- 上传方式选择 -->
+            <div class="flex border-b mb-4">
+              <button class="upload-tab active px-4 py-2 font-medium text-primary border-b-2 border-primary" data-tab="file">
+                本地文件
+              </button>
+              <button class="upload-tab px-4 py-2 font-medium text-gray-500 hover:text-primary" data-tab="camera">
+                摄像头录制
+              </button>
+            </div>
+            
+            <!-- 1. 本地文件上传区域 -->
+            <div id="fileUploadArea" class="upload-content">
+              <div class="upload-area">
+                <input type="file" id="homeworkVideoFile" accept="video/*" class="hidden">
+                <label for="homeworkVideoFile" class="block">
+                  <i class="fa fa-cloud-upload text-5xl text-gray-400 hover:text-primary mb-4 transition-colors"></i>
+                  <p class="text-gray-600 mb-2">点击或拖拽视频文件到此处</p>
+                  <p class="text-gray-400 text-sm">支持MP4格式，最大50MB</p>
+                </label>
+              </div>
+              
+              <!-- 上传进度 -->
+              <div id="fileProgress" class="mt-4 hidden">
+                <div class="flex justify-between text-sm mb-1">
+                  <span>上传中...</span>
+                  <span id="fileProgressPercent">0%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div id="fileProgressBar" class="bg-primary h-2 rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 2. 摄像头录制区域 -->
+            <div id="cameraUploadArea" class="upload-content hidden">
+              <div class="border rounded-lg overflow-hidden mb-4">
+                <video id="cameraPreview" class="w-full h-64 object-cover" autoplay></video>
+              </div>
+              <div class="flex space-x-3">
+                <button id="startRecord" class="btn-primary">开始录制</button>
+                <button id="stopRecord" class="btn-outline hidden">停止录制</button>
+                <button id="cancelRecord" class="border border-gray-300 text-gray-600 px-4 py-2 rounded-lg hidden">取消</button>
+              </div>
+              <p class="text-gray-400 text-sm mt-3">录制完成后可直接提交，支持最长10分钟录制</p>
+            </div>
+            
+            <!-- 视频预览（上传/录制后显示） -->
+            <div id="videoPreviewContainer" class="mt-4 hidden">
+              <p class="text-sm font-medium mb-2">视频预览：</p>
+              <video id="submittedVideo" class="w-full h-48 object-cover rounded-lg border" controls></video>
+              <button id="reuploadVideo" class="text-primary text-sm mt-2">重新上传</button>
+            </div>
+          </div>
+          
+          <!-- 文字备注（可选） -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2">作业备注（可选）</label>
+            <textarea class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="请输入作业相关说明..."></textarea>
+          </div>
+          
+          <!-- 提交按钮 -->
+          <div class="flex justify-end">
+            <button id="submitHomework" class="btn-primary">提交作业</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 课件上传弹窗 -->
+    <div id="coursewareUploadModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+      <div class="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6 border-b flex justify-between items-center">
+          <h3 class="text-xl font-bold">上传教学课件/视频</h3>
+          <button id="closeCoursewareModal" class="text-gray-500 hover:text-gray-700">
+            <i class="fa fa-times text-xl"></i>
+          </button>
+        </div>
+        
+        <div class="p-6">
+          <!-- 课件/视频上传区域 -->
+          <div class="mb-8">
+            <h4 class="font-medium mb-4">上传课件/视频</h4>
+            
+            <div class="upload-area">
+              <input type="file" id="coursewareFile" accept="video/*, application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation" class="hidden">
+              <label for="coursewareFile" class="block">
+                <i class="fa fa-cloud-upload text-5xl text-gray-400 hover:text-primary mb-4 transition-colors"></i>
+                <p class="text-gray-600 mb-2">点击或拖拽课件/视频文件到此处</p>
+                <p class="text-gray-400 text-sm">支持MP4、PDF、PPT/PPTX格式，单个文件最大100MB</p>
+              </label>
+            </div>
+            
+            <!-- 上传进度条 -->
+            <div id="coursewareProgress" class="mt-4 hidden">
+              <div class="flex justify-between text-sm mb-1">
+                <span>上传中...</span>
+                <span id="coursewareProgressPercent">0%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div id="coursewareProgressBar" class="bg-primary h-2 rounded-full" style="width: 0%"></div>
+              </div>
+            </div>
+            
+            <!-- 上传后预览（视频/文档） -->
+            <div id="coursewarePreview" class="mt-4 hidden">
+              <h4 class="font-medium mb-2">预览：</h4>
+              <div id="coursewareVideoPreview" class="mb-4 hidden">
+                <video controls class="w-full h-48 object-cover rounded-lg border"></video>
+              </div>
+              <div id="coursewarePdfPreview" class="mb-4 hidden">
+                <embed src="" type="application/pdf" width="100%" height="400px" class="rounded-lg border">
+              </div>
+              <div id="coursewarePptPreview" class="mb-4 hidden">
+                <div class="flex items-center justify-center h-48 border rounded-lg">
+                  <p class="text-gray-500">PPT文件预览功能暂未实现，可下载查看完整内容</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 课件详情表单 -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2">课件标题 <span class="text-danger">*</span></label>
+            <input type="text" id="coursewareTitle" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入课件标题">
+          </div>
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2">所属课程 <span class="text-danger">*</span></label>
+            <select id="courseSelect" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/50">
+              <option value="">请选择课程</option>
+              <option value="1">高中数学必修一</option>
+              <option value="2">高中数学必修二</option>
+              <option value="3">高中英语必修一</option>
+              <option value="4">高中英语必修二</option>
+              <option value="5">高中物理必修一</option>
+            </select>
+          </div>
+          <div class="mb-6">
+            <label class="block text-sm font-medium mb-2">课件描述（可选）</label>
+            <textarea id="coursewareDesc" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary/50" rows="3" placeholder="请输入课件描述..."></textarea>
+          </div>
+          
+          <!-- 提交按钮 -->
+          <div class="flex justify-end">
+            <button id="submitCourseware" class="btn-primary">提交上传</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- 页脚 -->
@@ -777,13 +1023,13 @@
         </div>
         
         <div>
-          <h4 class="text-lg font-bold mb-6">帮助中心</h4>
+          <h4 class="text-lg font-bold mb-6">教师专区</h4>
           <ul class="space-y-3">
-            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">新手指南</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">常见问题</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">使用教程</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">意见反馈</a></li>
+            <li><a href="#teacher-panel" class="text-gray-400 hover:text-white transition-colors">教师面板</a></li>
+            <li><a href="#courseware-upload" class="text-gray-400 hover:text-white transition-colors">上传课件</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">课程管理</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">作业批阅</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors">入驻申请</a></li>
           </ul>
         </div>
         
@@ -807,7 +1053,7 @@
       </div>
       
       <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-        <p>© 2023 创意机器人在线学习平台 版权所有</p>
+        <p>© 2025 创意机器人在线学习平台 版权所有</p>
       </div>
     </div>
   </footer>
@@ -836,65 +1082,3 @@
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          
-          const targetId = this.getAttribute('href');
-          if (targetId === '#' || targetId === '') return;
-          
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            // 计算目标位置（减去导航栏高度）
-            const navbarHeight = document.getElementById('navbar').offsetHeight;
-            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-            
-            window.scrollTo({
-              top: targetPosition,
-              behavior: 'smooth'
-            });
-            
-            // 关闭移动菜单
-            document.getElementById('mobileMenu').classList.add('hidden');
-          }
-        });
-      });
-    });
-    
-    // 作业完成情况图表
-    document.addEventListener('DOMContentLoaded', function() {
-     const ctx = document.getElementById('homeworkChart').getContext('2d');
-      new Chart(ctx, {
-       type: 'line',
-    data: {
-      labels: ['第1周', '第2周', '第3周', '第4周', '第5周', '第6周'],
-          datasets: [{
-            label: '作业得分',
-            data: [78, 82, 75, 88, 85, 90],
-            borderColor: '#165DFF',
-            backgroundColor: 'rgba(22, 93, 255, 0.1)',
-            tension: 0.3,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              min: 60,
-              max: 100,
-              ticks: {
-                stepSize: 10
-              }
-            }
-          }
-        }
-      });
-    });
-  </script>
-</body>
-</html>
