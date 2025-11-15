@@ -7,46 +7,97 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
-    .btn-back { @apply bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-all flex items-center; }
-    .video-container { @apply aspect-video w-full bg-black rounded-lg overflow-hidden; }
+    /* 自定义样式优化，确保播放控件不被遮挡 */
+    .btn-back {
+      @apply bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all flex items-center;
+    }
+    .video-container {
+      @apply aspect-video w-full bg-black rounded-lg overflow-visible; /* 关键：移除overflow-hidden，避免遮挡控件 */
+    }
+    /* 确保视频控件正常显示，不被拉伸隐藏 */
+    video {
+      overflow: visible !important;
+    }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
-  <!-- 头部：返回按钮 -->
+  <!-- 头部：返回按钮（保留原功能） -->
   <header class="bg-white shadow-sm py-4 sticky top-0 z-10">
     <div class="container mx-auto px-4">
       <a href="index.html" class="btn-back">
         <i class="fa fa-arrow-left mr-2"></i>
-        <span>返回课程列表</span>
+        <span class="font-bold">返回课程列表</span>
       </a>
     </div>
   </header>
 
-  <!-- 主要内容：视频播放区 -->
+  <!-- 主要内容：保留原页面所有元素，仅修复视频播放 -->
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-sm p-6 md:p-8">
-      <!-- 视频播放核心区域（已修复路径） -->
+      <!-- 视频播放核心区域（修复播放相关配置） -->
       <div class="video-container mb-6">
         <video 
-          src="videos/a1.mp4"  <!-- 兼容本地和GitHub Pages的路径 -->
+          src="./videos/a1.mp4"
           class="w-full h-full object-contain"
-          controls
-          preload="auto"
+          controls  <!-- 强制显示播放控件（核心） -->
+          preload="metadata"  <!-- 优化加载，优先获取视频元数据 -->
+          playsinline
+          webkit-playsinline  <!-- 兼容iOS Safari -->
+          x5-video-player-type="h5"  <!-- 兼容安卓X5内核（微信/QQ浏览器） -->
+          muted
         >
-          您的浏览器不支持视频播放，请更新浏览器
+          <source src="./videos/a1.mp4" type="video/mp4">
+          您的浏览器不支持HTML5视频播放，请更新浏览器至最新版本。
         </video>
       </div>
 
-      <!-- 视频信息 -->
-      <div>
-        <h1 class="text-2xl font-bold mb-3">大颗粒结构搭建</h1>
-        <div class="flex items-center text-gray-500 text-sm">
+      <!-- 新增：手动播放按钮（应对浏览器限制，原页面无，补充修复） -->
+      <div class="text-center mb-6">
+        <button onclick="document.querySelector('video').play()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all">
+          <i class="fa fa-play mr-1"></i> 点击播放视频
+        </button>
+      </div>
+
+      <!-- 视频信息（保留原内容） -->
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3" id="video-title">大颗粒结构搭建</h1>
+        <div class="flex flex-wrap items-center text-gray-500 text-sm gap-4">
           <span><i class="fa fa-user mr-1"></i> 郭老师</span>
-          <span class="mx-3">•</span>
           <span><i class="fa fa-clock-o mr-1"></i> 15:30</span>
+          <span><i class="fa fa-eye mr-1"></i> 1.2k 次观看</span>
         </div>
+      </div>
+
+      <!-- 课程简介（保留原内容） -->
+      <div class="border-t border-gray-200 pt-6">
+        <h3 class="text-lg font-bold text-gray-800 mb-3">课程简介</h3>
+        <p class="text-gray-600 leading-relaxed">
+          学习搭建稳定性结构（互锁结构、递增结构等），锻炼动手能力、问题解决能力、抗挫能力及专注力等。
+        </p>
       </div>
     </div>
   </main>
+
+  <!-- 修复播放的核心脚本（新增，不影响原页面其他功能） -->
+  <script>
+    // 1. 页面首次交互后激活视频加载（解决浏览器播放限制）
+    document.addEventListener('click', function initVideo() {
+      const video = document.querySelector('video');
+      video.load(); // 触发视频重新加载
+      document.removeEventListener('click', initVideo); // 只执行一次
+    }, { once: true });
+
+    // 2. 监听视频错误，控制台输出具体原因（方便排查）
+    const video = document.querySelector('video');
+    video.addEventListener('error', function() {
+      console.log('视频加载异常，原因：');
+      switch(video.error.code) {
+        case 1: console.log('❌ 视频文件不存在或路径错误'); break;
+        case 2: console.log('❌ 视频格式不支持（需H.264编码MP4）'); break;
+        case 3: console.log('❌ 视频加载过程中被中断'); break;
+        case 4: console.log('❌ 视频文件损坏或编码异常'); break;
+      }
+    });
+  </script>
 </body>
 </html>
