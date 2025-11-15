@@ -4,12 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>创意机器人 - 在线学习平台</title>
-  <!-- 引入外部资源 -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
   
-  <!-- 配置Tailwind -->
   <script>
     tailwind.config = {
       theme: {
@@ -46,18 +44,6 @@
       }
       .btn-outline {
         @apply border border-primary text-primary px-4 py-2 rounded-lg hover:bg-primary/10 transition-all;
-      }
-      .btn-secondary {
-        @apply bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-all;
-      }
-      .btn-danger {
-        @apply bg-danger text-white px-4 py-2 rounded-lg hover:bg-danger/90 transition-all;
-      }
-      .upload-area {
-        @apply border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-primary transition-colors;
-      }
-      .upload-tab.active {
-        @apply text-primary border-b-2 border-primary font-medium;
       }
     }
   </style>
@@ -233,15 +219,15 @@
           </div>
         </div>
         
-        <!-- 视频列表 -->
+        <!-- 视频列表（线上路径适配） -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <!-- 视频卡片1（修复播放按钮跳转链接+适配Vercel部署） -->
+          <!-- 视频卡片1（链接和路径适配线上） -->
           <div class="bg-white rounded-xl overflow-hidden shadow-sm card-hover">
             <div class="relative">
               <img src="https://picsum.photos/id/20/400/225" alt="乐高课程" class="w-full h-48 object-cover">
               <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">15:30</div>
-              <!-- 修复：跳转路径改为相对路径，适配Vercel部署 -->
-              <a href="video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+              <!-- 修复：跳转路径改为线上兼容的相对路径 -->
+              <a href="/video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <i class="fa fa-play text-primary"></i>
                 </div>
@@ -266,7 +252,7 @@
             <div class="relative">
               <img src="https://picsum.photos/id/21/400/225" alt="英语课程" class="w-full h-48 object-cover">
               <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">22:15</div>
-              <a href="video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+              <a href="/video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <i class="fa fa-play text-primary"></i>
                 </div>
@@ -291,7 +277,7 @@
             <div class="relative">
               <img src="https://picsum.photos/id/22/400/225" alt="物理课程" class="w-full h-48 object-cover">
               <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">18:45</div>
-              <a href="video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+              <a href="/video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <i class="fa fa-play text-primary"></i>
                 </div>
@@ -316,7 +302,7 @@
             <div class="relative">
               <img src="https://picsum.photos/id/23/400/225" alt="语文课程" class="w-full h-48 object-cover">
               <div class="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">25:10</div>
-              <a href="video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+              <a href="/video-player.html" class="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                 <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                   <i class="fa fa-play text-primary"></i>
                 </div>
@@ -1030,4 +1016,97 @@
           </ul>
         </div>
         <div>
-          <h4 class="text-lg font
+          <h4 class="text-lg font-bold mb-6">联系我们</h4>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <i class="fa fa-map-marker text-gray-400 mt-1 mr-3"></i>
+              <span class="text-gray-400">北京市海淀区中关村大街1号</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fa fa-phone text-gray-400 mt-1 mr-3"></i>
+              <span class="text-gray-400">400-123-4567</span>
+            </li>
+            <li class="flex items-start">
+              <i class="fa fa-envelope text-gray-400 mt-1 mr-3"></i>
+              <span class="text-gray-400">contact@example.com</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+        <p>© 2023 创意机器人学习平台 版权所有 | 京ICP备12345678号</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 页面交互脚本 -->
+  <script>
+    // 移动端菜单切换
+    document.getElementById('menuBtn').addEventListener('click', function() {
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // 作业提交弹窗控制
+    document.querySelectorAll('.homework-submit-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const modal = document.getElementById('homeworkSubmitModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.getElementById('modalTitle').textContent = `提交作业：${this.dataset.homework}`;
+      });
+    });
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+      document.getElementById('homeworkSubmitModal').classList.add('hidden');
+    });
+
+    // 课件上传弹窗控制
+    document.getElementById('open-courseware-upload').addEventListener('click', function() {
+      const modal = document.getElementById('coursewareUploadModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+
+    document.getElementById('closeCoursewareModal').addEventListener('click', function() {
+      document.getElementById('coursewareUploadModal').classList.add('hidden');
+    });
+
+    // 上传方式切换
+    document.querySelectorAll('.upload-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active', 'border-b-2', 'border-primary', 'text-primary'));
+        this.classList.add('active', 'border-b-2', 'border-primary', 'text-primary');
+        document.querySelectorAll('.upload-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`${this.dataset.tab}UploadArea`).classList.remove('hidden');
+      });
+    });
+
+    // 作业视频文件上传
+    document.getElementById('homeworkVideoFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const videoUrl = URL.createObjectURL(file);
+        document.getElementById('submittedVideo').src = videoUrl;
+        document.getElementById('videoPreviewContainer').classList.remove('hidden');
+      }
+    });
+
+    // 重新上传视频
+    document.getElementById('reuploadVideo').addEventListener('click', function() {
+      document.getElementById('homeworkVideoFile').value = '';
+      document.getElementById('videoPreviewContainer').classList.add('hidden');
+    });
+
+    // 摄像头录制（仅前端演示，实际需后端支持）
+    document.getElementById('startRecord').addEventListener('click', function() {
+      this.classList.add('hidden');
+      document.getElementById('stopRecord').classList.remove('hidden');
+      document.getElementById('cancelRecord').classList.remove('hidden');
+      // 实际项目中需调用MediaRecorder API实现录制
+      alert('摄像头录制功能需后端支持，此处仅为演示');
+    });
+
+    document.getElementById('stopRecord').addEventListener('click', function() {
+      this.classList.add('hidden');
+      document
